@@ -16,8 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from games.views import ContactUsView, HomePageView, LeaderboardsView, LoginView, RegisterView, ReviewUsView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('contact-us/', ContactUsView.as_view(), name='contact-us'),
+    path('', HomePageView.as_view(), name='home'),
+    path('leaderboards/', LeaderboardsView.as_view(), name='leaderboards'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('review-us/', ReviewUsView.as_view(), name='review-us'),
     path('', include("games.urls"))
 ]
