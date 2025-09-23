@@ -22,6 +22,9 @@ class LoginView(TemplateView):
 class MathFactsView(TemplateView):
     template_name = "math-facts.html"
 
+class MyAccountView(TemplateView):
+    template_name = "my-account.html"
+
 class RegisterView(TemplateView):
     template_name = "register.html"
 
