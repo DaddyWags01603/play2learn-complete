@@ -43,14 +43,11 @@
           </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'jokes:list' %}">Jokes</a>
+          <a class="nav-link" href="{% url 'jokes:creator' user.username %}?order={{ order }}&direction={{ direction }}">Jokes</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'reviews:list' %}">Reviews</a>
         </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="{% url 'jokes:list' %}">Jokes</a>
-        </li> -->
         {% if not user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="{% url 'account_login' %}">Log in</a>
