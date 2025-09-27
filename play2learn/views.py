@@ -4,7 +4,7 @@ from django.contrib import messages
 
 
 class AboutUsView(TemplateView):
-    template_name = "about-us.html"
+    template_name = "about_us.html"
 
     def get(self, request, *args, **kwargs):
         messages.debug(request, 'Debug message.')
@@ -25,18 +25,6 @@ class HomePageView(TemplateView):
 
 class LeaderboardsView(TemplateView):
     template_name = "leaderboards.html"
-
-# class LoginView(TemplateView):
-#     template_name = "login.html"
-
-# class MathFactsView(TemplateView):
-#     template_name = "math-facts.html"
-
-# class MyAccountView(TemplateView):
-#     template_name = "my-account.html"
-
-# class RegisterView(TemplateView):
-#     template_name = "register.html"
 
 class ReviewUsView(TemplateView):
     template_name = "review-us.html"

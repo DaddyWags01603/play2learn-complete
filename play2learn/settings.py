@@ -43,12 +43,15 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # local apps
-    "games.apps.GamesConfig",
-    "leaderboards.apps.LeaderboardsConfig",
-    "reviews.apps.ReviewsConfig",
-    "users.apps.UsersConfig",
     "common.apps.CommonConfig",
     "contact.apps.ContactConfig",
+    "games.apps.GamesConfig",
+    "jobs.apps.JobsConfig",
+    "jokes.apps.JokesConfig",
+    "leaderboards.apps.LeaderboardsConfig",
+    "pages.apps.PagesConfig",
+    "reviews.apps.ReviewsConfig",
+    "users.apps.UsersConfig",
     
     # Third-party
     "crispy_forms",
@@ -56,6 +59,7 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
+    "private_storage",
 ]
 
 SITE_ID = 1
@@ -184,6 +188,13 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
+# private-storage settings
+PRIVATE_STORAGE_ROOT = MEDIA_ROOT / 'private/'
+PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
