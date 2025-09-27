@@ -73,8 +73,8 @@
           </li>
         {% endif %}
       </ul>
-      <form>
-        <input  type="search"
+      <form class="my-2 my-lg-0" action="{% url 'jokes:list' %}">
+        <input type="search"
           placeholder="Search" aria-label="Search" name="q" 
           value="{{ request.GET.q }}">
         <button class="btn btn-outline-success me-5" type="submit">
