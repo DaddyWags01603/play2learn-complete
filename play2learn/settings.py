@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -31,16 +32,37 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    # Built-in Django apps
     "django.contrib.admin",
+    "django.contrib.admindocs",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
+    "django.contrib.sites",
     "django.contrib.staticfiles",
 
     # local apps
-    "games.apps.GamesConfig"
+    "games.apps.GamesConfig",
+    "leaderboards.apps.LeaderboardsConfig",
+    "reviews.apps.ReviewsConfig",
+    "users.apps.UsersConfig",
+    "common.apps.CommonConfig",
+    "contact.apps.ContactConfig",
+    
+    # Third-party
+    "crispy_forms",
+    "crispy_bootstrap5",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
 ]
+
+SITE_ID = 1
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -78,14 +100,34 @@ WSGI_APPLICATION = "play2learn.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'website',
+        'USER': 'postgres',
+        'PASSWORD': "admin",
+        'HOST': 'localhost',
+        'PORT': 5433
     }
 }
 
+# EMAIL
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+DEFAULT_FROM_EMAIL = 'scott.wagner@wagnerwebworks.com'
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
+
+AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, even w/o `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth`-specific auth methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -102,6 +144,25 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# AUTHENTIATION SETTINGS
+AUTH_USER_MODEL = 'users.CustomUser'
+
+# AUTHENTICATION SETTINGS
+AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_URL = 'account_login'
+LOGIN_REDIRECT_URL = 'home'
+
+## django-allauth settings
+ACCOUNT_AUTHENTICATION_METHOD = 'email' # Default: 'username'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1 # Default: 3
+ACCOUNT_EMAIL_REQUIRED = True # Default: False
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory' # Default: 'optional'
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5 # Default: 5
+ACCOUNT_LOGIN_ATTEMPTS_TIMEOUT = 300 # Default 300
+ACCOUNT_LOGOUT_REDIRECT_URL = 'account_login' # Default: '/'
+ACCOUNT_USERNAME_REQUIRED = False # Default: True
+
+ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
@@ -118,7 +179,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = "/static/"
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -128,3 +189,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# BOTTOM OF settings.py
+if os.environ.get('ENVIRONMENT') != 'production':
+    from .local_settings import *
+# DON'T PUT ANYTHING BELOW THIS

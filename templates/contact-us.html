@@ -2,6 +2,20 @@
 
 {% block title %}Contact Us{% endblock %}
 {% block main %}
-  <h2>Welcome!</h2>
-  <p>Send us an email</p>
+  <h2>Contact us</h2>
+  <form id="contact-form" name="contact-form" action="javascript:alert('Form Submitted')">
+      <div class="email">
+          <label for="contact-email">Your Email:</label>
+          <input type="text" name="contact-email" id="contact-email">
+      </div>
+      <div id="subject">
+          <label for="contact-subject">Subject:</label>
+          <input type="text" name="contact-subject" id="contact-subject">
+      </div>
+      <div id="message">
+          <label for="contact-message">Message:</label>
+          <textarea name="contact-message" id="contact-message" rows="5"></textarea>
+      </div>
+      <input id="contact-submit" name="contact-submit" type="submit" value="send">
+  </form>
 {% endblock %}

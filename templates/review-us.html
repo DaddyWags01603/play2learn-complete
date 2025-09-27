@@ -2,6 +2,10 @@
 
 {% block title %}Review Us{% endblock %}
 {% block main %}
-  <h2>Welcome!</h2>
-  <p>Submit a review</p>
+  <h2>Reviews</h2>
+  <ul class="list-group list-group-flush mb-3">
+    {% for joke in review_list %}
+      <li class="list-group-item">{{ review.name }}/{{ review.rating }}</li>
+    {% endfor %}
+  </ul>
 {% endblock %}

@@ -1,9 +1,7 @@
 {% extends "_base_vue.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Review Us{% endblock %}
 {% block main %}
-  <h2>Welcome!</h2>
-  <p>This is the home page</p>
   <a class="btn btn-success btn-sm float-end" href="{% url 'reviews:create' %}">
     + New Review
   </a>
@@ -37,4 +35,5 @@
       </div>
     {% endfor %}
   </ul>
+  
 {% endblock %}
