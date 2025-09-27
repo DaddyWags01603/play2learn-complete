@@ -1,4 +1,4 @@
-{% extends "_base.html" %}
+{% extends "_base_vue.html" %}
 
 {% block title %}Jokes{% endblock %}
 {% block main %}
@@ -46,4 +46,5 @@
     </tbody>
   </table>
 </div>
+{% include "includes/pagination.html" %}
 {% endblock %}
