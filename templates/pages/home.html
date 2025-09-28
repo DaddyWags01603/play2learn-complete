@@ -4,37 +4,46 @@
 {% block main %}
   <h2>Welcome!</h2>
   <p>This is the home page</p>
-  <a class="btn btn-success btn-sm float-end" href="{% url 'reviews:create' %}">
-    + New Review
-  </a>
-  <h2>Reviews</h2>
-  <ul class="list-group list-group-flush mb-3">
-    {% for review in review_list %}
-      <div class="card border-primary m-auto mb-3 text-center"
-        style="max-width: 30rem">
-        <div class="card-header">{{ review.name }}</div>
-        <div class="card-body text-primary">
-          <h5 class="card-title">{{ review.rating }}</h5>
+
+  <h2 class="text-center">Our Latest Reviews</h2>
+  <div id="homepageCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      {% for review in reviews %}
+        <button type="button" data-bs-target="#homepageCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+          class="{% if forloop.first %}active{% endif %}"
+          {% if forloop.first %}aria-current="true"{% endif %}
+          aria-label="Slide {{ forloop.counter }}"></button>
+      {% endfor %}
+    </div>
+
+    <div class="carousel-inner">
+      {% for review in reviews %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="4000">
+          <div class="card border-primary m-auto mb-3 text-center" style="max-width: 30rem">
+            <div class="card-header">{{ review.name }}</div>
+            <div class="card-body text-primary">
+              <h5 class="card-title">{{ review.rating }} / 5</h5>
+            </div>
+            <div class="card-body text-primary">
+              <h5 class="card-title">{{ review.comments }}</h5>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">
+                Created on: {{ review.created }}
+              </small>
+            </div>  
+          </div>  
+          <div class="carousel-caption d-none d-md-block">
+            <!-- optional short caption -->
+          </div>
         </div>
-        <div class="card-body text-primary">
-          <h5 class="card-title">{{ review.comments }}</h5>
+      {% empty %}
+        <div class="carousel-item active">
+          <div class="d-block w-100 p-4" style="min-height:200px; background:#f8f9fa;">
+            <h5>No reviews yet</h5>
+            <p>Be the first to leave a review.</p>
+          </div>
         </div>
-        <div class="card-footer">
-          <small class="text-muted">
-            Created on: {{ review.created }}
-            Last updated: {{ review.updated }}
-          </small>
-          <td>
-            {% if joke.user == user %}
-              <a href="{% url 'reviews:update' review.slug %}" class="btn btn-info btn-sm float-end me-2">Update</a>
-              <a href="{% url 'reviews:delete' review.slug %}" class="btn btn-danger btn-sm float-end me-2">Delete</a>
-            {% else %}
-            <small>by {{ review.user.username }}</small>
-            {% endif %}
-          </td>
-          
-        </div>
-      </div>
-    {% endfor %}
-  </ul>
+      {% endfor %}
+    </div>
 {% endblock %}
