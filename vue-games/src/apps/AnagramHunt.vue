@@ -70,6 +70,7 @@
 
 <script>
 import anagrams from "@/helpers/anagrams";
+import axios from "axios";
 import {getRandomInteger} from "@/helpers/helpers";
 
 export default {
@@ -78,7 +79,7 @@ export default {
     return {
       userName: '',
       score: 0,
-      timeLeft: 60,
+      timeLeft: 10,
       anagrams: anagrams,
       currentWord: "",
       anagramList: [],
@@ -86,7 +87,7 @@ export default {
       screen: "start",
       correctGuesses: [],
       userInput: "",
-      interval: null,
+      interval: null
     }
   },
   computed: {
@@ -129,8 +130,45 @@ export default {
     async recordScore() {
       // TODO: when Anagram Hunt finishes, make an Ajax call with axios (this.axios)
       // to record the score on the backend
+      const submitUrl = "/submit-score/";
+
+      const payload = {
+        game_type: "Anagram Hunt",
+        score: Number(this.score),
+        difficulty: Number(this.wordLength),
+      };
+
+      // helper to read Django CSRF cookie
+      const getCookie = name => {
+        const match = document.cookie.match('(^|;)\\s*' + name + '\\s*=\\s*([^;]+)');
+        return match ? match.pop() : '';
+      };
+      const csrftoken = getCookie('csrftoken');
+
+      // optional UI state
+      this.submitting = true;
+
+      try {
+        const resp = await axios.post(submitUrl, payload, {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrftoken
+          },
+          withCredentials: true
+        });
+        // handle server response (resp.data)
+        console.log('score saved', resp.data);
+        this.lastSavedResult = resp.data;
+        // optional: show success feedback to user
+      } catch (err) {
+        console.error('failed to save score', err);
+        this.lastSaveError = err;
+        // optional: show error feedback / retry
+      } finally {
+        this.submitting = false;
+      }
     }
-  },
+},
   watch: {
     userInput() {
       // check answer when user input changes
